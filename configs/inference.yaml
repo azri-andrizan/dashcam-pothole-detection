@@ -1,0 +1,66 @@
+# ------------------------------------------------------------------------------
+# Inference Configuration for Pothole Detection
+# ------------------------------------------------------------------------------
+
+# ------------------------------
+# 1. Model Configuration
+# ------------------------------
+output_dir: "results/inference"        
+output_codec: "avc1"                   
+
+# Default video input
+video_input: "video_input.mp4" # Path to the input video file
+
+# Model settings
+model:
+  path: "models/pothole_yolo11s_v2_ft3/weights/best.pt" # Path to the trained model weights
+
+# Processing
+device: "cuda"         # choice: 'cuda', 'cpu', atau 'auto'
+half_precision: true   
+skip_frames: 0         
+verbose: true          
+
+# Detection settings
+confidence_threshold: 0.25
+iou_threshold: 0.45
+
+# Drawing settings
+box_color: [0, 0, 255]         
+box_thickness: 3
+font: "FONT_HERSHEY_SIMPLEX"   
+text_scale: 0.7
+text_color: [255, 255, 255]
+
+# Save options
+save_detections: true
+
+mlflow:
+  enabled: false
+  tracking_uri: "http://127.0.0.1:5000"
+  experiment_name: "pothole_inference"
+  log_artifacts: true
+  log_metrics: true
+
+# ------------------------------
+# Presets for Different Use Cases
+# ------------------------------
+presets:
+  fast:           
+    confidence_threshold: 0.6
+    skip_frames: 2
+    half_precision: true
+    batch_size: 4
+
+  balanced:        
+    confidence_threshold: 0.5
+    skip_frames: 0
+    half_precision: false
+    batch_size: 1
+
+  accurate:        
+    confidence_threshold: 0.3
+    skip_frames: 0
+    half_precision: false
+    batch_size: 1
+    iou_threshold: 0.4

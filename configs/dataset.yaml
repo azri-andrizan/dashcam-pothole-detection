@@ -1,0 +1,5 @@
+train: data\processed\train
+val: data\processed\val
+nc: 1
+names:
+- pothole

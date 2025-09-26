@@ -1,0 +1,64 @@
+# configs/experiment.yaml
+
+mlflow:
+  tracking_uri: mlruns
+  experiment_name: pothole_detection
+  log_artifacts: true
+  log_metrics: true
+  log_params: true
+
+experiment:
+  name: pothole_yolo11n_v1
+  description: "YOLOv11 pretrained model fine-tuning on pothole detection dataset version 1.0"
+
+dataset:
+  version: v1.0
+  train_dir: data/processed/train
+  val_dir: data/processed/val
+  
+  config: configs/dataset.yaml
+
+  class_names:
+    - pothole
+
+training:
+  model:
+    name: pre-trained/yolo11s.pt
+    type: detection
+
+  augmentation:
+    hsv_h: 0.015
+    hsv_s: 0.7
+    hsv_v: 0.4
+    degrees: 0.0
+    translate: 0.1
+    scale: 0.5
+    shear: 0.0
+    flipud: 0.0
+    fliplr: 0.5
+    mosaic: 0.0
+    mixup: 0.0
+
+  loss:
+    box: 7.5
+    cls: 0.5
+    dfl: 1.5
+
+  epochs: 30
+  batch_size: 16
+  img_size: 832
+  optimizer: AdamW
+  lr0: 0.001
+  lrf: 0.01
+  weight_decay: 0.0005
+  scheduler: cosine
+  early_stopping: true
+  patience: 10
+  device: 0
+  workers: 4
+
+output:
+  dir: models/
+  save_model: true
+  save_logs: true
+  save_metrics: true

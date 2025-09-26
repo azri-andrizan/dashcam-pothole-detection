@@ -1,0 +1,5 @@
+train: data_v2\processed\train
+val: data_v2\processed\val
+nc: 1
+names:
+- pothole

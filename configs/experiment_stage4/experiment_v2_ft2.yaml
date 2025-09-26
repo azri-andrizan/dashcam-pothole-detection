@@ -1,0 +1,63 @@
+# configs/experiment_v2.yaml
+
+mlflow:
+  tracking_uri: mlruns              
+  experiment_name: pothole_detection_v2  
+  log_artifacts: true               
+  log_metrics: true                 
+  log_params: true                  
+
+experiment:
+  name: pothole_yolo11s_v2_ft2           
+  description: "YOLOv11 pretrained model fine-tuning on pothole detection dataset version 2.0"  
+
+dataset:
+  version: v2.0                      
+  train_dir: data_v2/processed/train 
+  val_dir: data_v2/processed/val     
+  config: configs/dataset_v2.yaml    
+
+  class_names:
+    - pothole                         
+
+training:
+  model:
+    name: C:\workbench\pothole-detection-mlflow\models\pothole_yolo11s_v2_ft1\weights\best.pt
+    type: detection                   
+  augmentation:
+    hsv_h: 0.015                       # Hue
+    hsv_s: 0.7                         # Saturation
+    hsv_v: 0.4                         # Brightness
+    degrees: 0.0                       # Rotation (disabled)
+    translate: 0.1                     # Translation
+    scale: 0.5                         # Scaling
+    shear: 0.0                         # Shear (disabled)
+    flipud: 0.0                        # Vertical flip (disabled)
+    fliplr: 0.5                        # Horizontal flip
+    mosaic: 0.0                        # Mosaic augmentation (disabled)
+    mixup: 0.0                         # Mixup (disabled)
+
+  loss:
+    box: 7.5                           # Weight for bounding box regression
+    cls: 0.5                           # Weight for classification 
+    dfl: 1.5                           # Weight for Distribution Focal Loss (box quality)
+
+  # Core training settings
+  epochs: 20                           # Total training epochs
+  batch_size: 2                        # Number of images per batch
+  img_size: 960                        # Input image resolution
+  optimizer: AdamW                     # Optimizer choice
+  lr0: 0.0018                          # Initial learning rate
+  lrf: 0.01                            # Final learning rate
+  weight_decay: 0.0005                 # Weight decay
+  scheduler: cosine                    # Learning rate scheduling method
+  early_stopping: true                 # Enable early stopping
+  patience: 10                         # Number of epochs to wait before early stopping
+  device: 0                            # GPU device ID (0 = first GPU)
+  workers: 4                           # Number of workers for data loading
+
+output:
+  dir: models/
+  save_model: true
+  save_logs: true
+  save_metrics: true

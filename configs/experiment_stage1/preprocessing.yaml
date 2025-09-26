@@ -1,0 +1,8 @@
+# configs/preprocessing.yaml
+input_dir: "data/raw"            
+output_dir: "data/processed"     
+overwrite: true                 
+
+target_size: [832, 832] 
+padding_color: [114, 114, 114]   
+interpolation: "linear"          
